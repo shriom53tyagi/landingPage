@@ -923,7 +923,12 @@ export default function Index() {
                               }}
                               className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300"
                             >
-                              <detail.icon className="w-6 h-6 text-primary" />
+                              {(() => {
+                                const IconComponent = getIcon(detail.icon);
+                                return (
+                                  <IconComponent className="w-6 h-6 text-primary" />
+                                );
+                              })()}
                             </motion.div>
 
                             <h4 className="font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
