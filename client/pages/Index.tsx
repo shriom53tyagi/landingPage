@@ -149,6 +149,8 @@ export default function Index() {
   const [expandedStory, setExpandedStory] = useState<number | null>(null);
   const [showStoryDialog, setShowStoryDialog] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const x = useSpring(mouseX, { stiffness: 100, damping: 20 });
