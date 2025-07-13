@@ -784,7 +784,7 @@ export default function Index() {
                   }}
                   className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl p-8 relative overflow-hidden border-2 border-primary/20"
                 >
-                  {/* Dr Sarah Chen Photo */}
+                  {/* Dynamic Photo Gallery */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -795,29 +795,76 @@ export default function Index() {
                       animate={glowPulse}
                       className="absolute inset-0 rounded-2xl overflow-hidden"
                     >
-                      {/* Photo Container */}
+                      {/* Photo Container with Navigation */}
                       <div className="relative w-full h-full">
-                        {/* Professional placeholder photo */}
-                        <motion.img
-                          src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
-                          alt={`${coachData.profile.name} - Health Coach`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            // Fallback to placeholder if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const fallback =
-                              target.nextElementSibling as HTMLElement;
-                            if (fallback) fallback.style.display = "flex";
+                        <AnimatePresence mode="wait">
+                          <motion.img
+                            key={currentPhotoIndex}
+                            src={professionalPhotos[currentPhotoIndex].url}
+                            alt={professionalPhotos[currentPhotoIndex].caption}
+                            className="w-full h-full object-cover"
+                            initial={{ opacity: 0, scale: 1.1 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.6 }}
+                            onError={(e) => {
+                              // Fallback to placeholder if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              const fallback =
+                                target.parentElement?.querySelector(
+                                  ".fallback-placeholder",
+                                ) as HTMLElement;
+                              if (fallback) fallback.style.display = "flex";
+                            }}
+                          />
+                        </AnimatePresence>
+
+                        {/* Photo Navigation Arrows */}
+                        <motion.button
+                          whileHover={{
+                            scale: 1.1,
+                            backgroundColor: "rgba(0,0,0,0.8)",
                           }}
-                          initial={{ scale: 1.1 }}
-                          animate={{ scale: 1 }}
-                          transition={{ duration: 0.8 }}
-                        />
+                          whileTap={{ scale: 0.9 }}
+                          onClick={prevPhoto}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/70 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background/90 transition-all z-10"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </motion.button>
+
+                        <motion.button
+                          whileHover={{
+                            scale: 1.1,
+                            backgroundColor: "rgba(0,0,0,0.8)",
+                          }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={nextPhoto}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/70 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background/90 transition-all z-10"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </motion.button>
+
+                        {/* Photo Indicators */}
+                        <div className="absolute top-2 left-1/2 -translate-x-1/2 flex space-x-1 z-10">
+                          {professionalPhotos.map((_, index) => (
+                            <motion.button
+                              key={index}
+                              onClick={() => setCurrentPhotoIndex(index)}
+                              className={`w-2 h-2 rounded-full transition-all ${
+                                index === currentPhotoIndex
+                                  ? "bg-white scale-125"
+                                  : "bg-white/50 hover:bg-white/75"
+                              }`}
+                              whileHover={{ scale: 1.2 }}
+                              whileTap={{ scale: 0.9 }}
+                            />
+                          ))}
+                        </div>
 
                         {/* Fallback placeholder if image doesn't load */}
                         <motion.div
-                          className="absolute inset-0 bg-gradient-to-br from-background/95 to-background/85 backdrop-blur-sm flex items-center justify-center text-center"
+                          className="fallback-placeholder absolute inset-0 bg-gradient-to-br from-background/95 to-background/85 backdrop-blur-sm flex items-center justify-center text-center"
                           style={{ display: "none" }}
                         >
                           <div className="space-y-4">
@@ -842,16 +889,20 @@ export default function Index() {
                           </div>
                         </motion.div>
 
-                        {/* Overlay with name and rating */}
+                        {/* Dynamic Overlay with photo info */}
                         <motion.div
+                          key={currentPhotoIndex}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 1, duration: 0.6 }}
+                          transition={{ delay: 0.3, duration: 0.6 }}
                           className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/95 via-background/80 to-transparent p-4 text-center"
                         >
-                          <motion.h3 className="text-lg font-semibold text-foreground mb-2">
-                            {coachData.profile.name}
+                          <motion.h3 className="text-lg font-semibold text-foreground mb-1">
+                            {professionalPhotos[currentPhotoIndex].caption}
                           </motion.h3>
+                          <motion.p className="text-xs text-muted-foreground mb-2">
+                            {professionalPhotos[currentPhotoIndex].location}
+                          </motion.p>
                           <motion.div
                             className="flex justify-center space-x-1 mb-2"
                             variants={staggerContainer}
@@ -877,9 +928,6 @@ export default function Index() {
                               </motion.div>
                             ))}
                           </motion.div>
-                          <motion.p className="text-xs text-muted-foreground">
-                            {coachData.profile.description}
-                          </motion.p>
                         </motion.div>
                       </div>
                     </motion.div>
