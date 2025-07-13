@@ -1049,7 +1049,14 @@ export default function Index() {
                       }}
                       className={`w-12 h-12 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0`}
                     >
-                      <approach.icon className={`w-6 h-6 ${approach.color}`} />
+                      {(() => {
+                        const IconComponent = getIcon(approach.icon);
+                        return (
+                          <IconComponent
+                            className={`w-6 h-6 ${approach.color}`}
+                          />
+                        );
+                      })()}
                     </motion.div>
                     <div>
                       <h4 className="font-semibold text-foreground mb-2">
