@@ -786,7 +786,7 @@ export default function Index() {
             </motion.button>
 
             <div className="flex space-x-2">
-              {storyChapters.map((_, index) => (
+              {coachData.storyChapters.map((_, index) => (
                 <motion.button
                   key={index}
                   onClick={() => goToStory(index)}
