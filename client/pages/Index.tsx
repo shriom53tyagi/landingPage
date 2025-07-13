@@ -161,6 +161,61 @@ export default function Index() {
   // Fetch coach data
   const { coachData, loading, error } = useCoachData();
 
+  // Dynamic photo gallery
+  const professionalPhotos = [
+    {
+      url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "Dr. Sarah Chen - Health Transformation Expert",
+      location: "Private Practice Session",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "Leading Wellness Workshop",
+      location: "Health & Wellness Conference 2024",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "One-on-One Coaching Session",
+      location: "San Francisco Wellness Center",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "Meditation & Mindfulness Training",
+      location: "Mindful Living Retreat",
+    },
+  ];
+
+  // Dynamic video content
+  const storyVideos = [
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      title: "My Personal Health Transformation",
+      duration: "2:15",
+      description:
+        "The journey that changed everything - from burnout to breakthrough",
+    },
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      title: "Why I Became a Health Coach",
+      duration: "3:30",
+      description:
+        "The moment I realized my true calling was helping others heal",
+    },
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      title: "Client Success Stories",
+      duration: "4:20",
+      description:
+        "Real transformations from real people - their stories will inspire you",
+    },
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      title: "My Approach to Wellness",
+      duration: "2:45",
+      description: "The unique methodology that creates lasting change",
+    },
+  ];
+
   const personalQuotes = [
     {
       text: "Every client's journey is unique, and I'm here to walk alongside you every step of the way.",
