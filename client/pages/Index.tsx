@@ -707,7 +707,7 @@ export default function Index() {
                   }}
                   className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl p-8 relative overflow-hidden border-2 border-primary/20"
                 >
-                  {/* Personal Photo Placeholder */}
+                  {/* Dr Sarah Chen Photo */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -716,59 +716,93 @@ export default function Index() {
                   >
                     <motion.div
                       animate={glowPulse}
-                      className="absolute inset-0 bg-gradient-to-br from-background/90 to-background/70 backdrop-blur flex items-center justify-center"
+                      className="absolute inset-0 rounded-2xl overflow-hidden"
                     >
-                      <div className="text-center space-y-4">
-                        <motion.div
-                          animate={{
-                            scale: [1, 1.1, 1],
-                            rotate: [0, 5, -5, 0],
+                      {/* Photo Container */}
+                      <div className="relative w-full h-full">
+                        {/* Replace this with actual photo */}
+                        <motion.img
+                          src="/dr-sarah-chen.jpg"
+                          alt={`${coachData.profile.name} - Health Coach`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // Fallback to placeholder if image fails to load
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const fallback =
+                              target.nextElementSibling as HTMLElement;
+                            if (fallback) fallback.style.display = "flex";
                           }}
-                          transition={{ duration: 3, repeat: Infinity }}
-                          className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto border-4 border-white/50 shadow-2xl"
-                        >
-                          <Camera className="w-12 h-12 text-white" />
-                        </motion.div>
-                        <motion.h3
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1, duration: 0.6 }}
-                          className="text-xl font-semibold text-foreground"
-                        >
-                          {coachData.profile.name}
-                        </motion.h3>
-                        <motion.p
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1.2, duration: 0.6 }}
-                          className="text-muted-foreground"
-                        >
-                          {coachData.profile.description}
-                        </motion.p>
+                          initial={{ scale: 1.1 }}
+                          animate={{ scale: 1 }}
+                          transition={{ duration: 0.8 }}
+                        />
+
+                        {/* Fallback placeholder if image doesn't load */}
                         <motion.div
-                          className="flex justify-center space-x-1"
-                          variants={staggerContainer}
-                          initial="hidden"
-                          animate="visible"
+                          className="absolute inset-0 bg-gradient-to-br from-background/95 to-background/85 backdrop-blur-sm flex items-center justify-center text-center"
+                          style={{ display: "none" }}
                         >
-                          {[...Array(5)].map((_, i) => (
+                          <div className="space-y-4">
                             <motion.div
-                              key={i}
-                              variants={fadeInUp}
                               animate={{
-                                scale: [1, 1.2, 1],
-                                rotate: [0, 10, -10, 0],
+                                scale: [1, 1.1, 1],
+                                rotate: [0, 5, -5, 0],
                               }}
-                              transition={{
-                                duration: 0.5,
-                                delay: i * 0.1,
-                                repeat: Infinity,
-                                repeatDelay: 3,
-                              }}
+                              transition={{ duration: 3, repeat: Infinity }}
+                              className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto border-4 border-white/50 shadow-2xl"
                             >
-                              <Star className="w-4 h-4 fill-primary text-primary" />
+                              <Camera className="w-10 h-10 text-white" />
                             </motion.div>
-                          ))}
+                            <div>
+                              <h3 className="text-lg font-semibold text-foreground mb-1">
+                                {coachData.profile.name}
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                {coachData.profile.description}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        {/* Overlay with name and rating */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1, duration: 0.6 }}
+                          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/95 via-background/80 to-transparent p-4 text-center"
+                        >
+                          <motion.h3 className="text-lg font-semibold text-foreground mb-2">
+                            {coachData.profile.name}
+                          </motion.h3>
+                          <motion.div
+                            className="flex justify-center space-x-1 mb-2"
+                            variants={staggerContainer}
+                            initial="hidden"
+                            animate="visible"
+                          >
+                            {[...Array(5)].map((_, i) => (
+                              <motion.div
+                                key={i}
+                                variants={fadeInUp}
+                                animate={{
+                                  scale: [1, 1.2, 1],
+                                  rotate: [0, 10, -10, 0],
+                                }}
+                                transition={{
+                                  duration: 0.5,
+                                  delay: i * 0.1,
+                                  repeat: Infinity,
+                                  repeatDelay: 3,
+                                }}
+                              >
+                                <Star className="w-3 h-3 fill-primary text-primary" />
+                              </motion.div>
+                            ))}
+                          </motion.div>
+                          <motion.p className="text-xs text-muted-foreground">
+                            {coachData.profile.description}
+                          </motion.p>
                         </motion.div>
                       </div>
                     </motion.div>
