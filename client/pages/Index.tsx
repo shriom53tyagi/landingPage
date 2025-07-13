@@ -900,19 +900,19 @@ export default function Index() {
                 className="flex items-center space-x-2"
               >
                 <ChevronLeft className="w-5 h-5" />
-                <span>Previous Chapter</span>
+                <span className="hidden sm:inline">Previous Chapter</span>
               </Button>
             </motion.div>
 
-            <motion.div className="text-center px-6">
-              <p className="text-sm text-muted-foreground">
+            <motion.div className="text-center px-2 sm:px-6">
+              <p className="text-sm text-muted-foreground hidden sm:block">
                 {currentChapter.phase}
               </p>
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <ArrowDown className="w-6 h-6 text-primary mx-auto mt-2" />
+                <ArrowDown className="w-5 sm:w-6 h-5 sm:h-6 text-primary mx-auto mt-1 sm:mt-2" />
               </motion.div>
             </motion.div>
 
@@ -922,7 +922,7 @@ export default function Index() {
                 onClick={() => paginate(1)}
                 className="flex items-center space-x-2"
               >
-                <span>Next Chapter</span>
+                <span className="hidden sm:inline">Next Chapter</span>
                 <ChevronRight className="w-5 h-5" />
               </Button>
             </motion.div>
