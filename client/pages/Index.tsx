@@ -144,6 +144,8 @@ export default function Index() {
   const mouseY = useMotionValue(0);
   const x = useSpring(mouseX, { stiffness: 100, damping: 20 });
   const y = useSpring(mouseY, { stiffness: 100, damping: 20 });
+  const rotateX = useTransform(y, [-100, 100], [10, -10]);
+  const rotateY = useTransform(x, [-100, 100], [-10, 10]);
 
   // Fetch coach data
   const { coachData, loading, error } = useCoachData();
