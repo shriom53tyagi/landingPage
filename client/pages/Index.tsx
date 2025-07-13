@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   motion,
   useMotionValue,
@@ -149,6 +149,8 @@ export default function Index() {
   const [expandedStory, setExpandedStory] = useState<number | null>(null);
   const [showStoryDialog, setShowStoryDialog] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const x = useSpring(mouseX, { stiffness: 100, damping: 20 });
@@ -158,6 +160,61 @@ export default function Index() {
 
   // Fetch coach data
   const { coachData, loading, error } = useCoachData();
+
+  // Dynamic photo gallery
+  const professionalPhotos = [
+    {
+      url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "Dr. Sarah Chen - Health Transformation Expert",
+      location: "Private Practice Session",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "Leading Wellness Workshop",
+      location: "Health & Wellness Conference 2024",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "One-on-One Coaching Session",
+      location: "San Francisco Wellness Center",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      caption: "Meditation & Mindfulness Training",
+      location: "Mindful Living Retreat",
+    },
+  ];
+
+  // Dynamic video content
+  const storyVideos = [
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      title: "My Personal Health Transformation",
+      duration: "2:15",
+      description:
+        "The journey that changed everything - from burnout to breakthrough",
+    },
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      title: "Why I Became a Health Coach",
+      duration: "3:30",
+      description:
+        "The moment I realized my true calling was helping others heal",
+    },
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      title: "Client Success Stories",
+      duration: "4:20",
+      description:
+        "Real transformations from real people - their stories will inspire you",
+    },
+    {
+      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      title: "My Approach to Wellness",
+      duration: "2:45",
+      description: "The unique methodology that creates lasting change",
+    },
+  ];
 
   const personalQuotes = [
     {
@@ -302,6 +359,35 @@ export default function Index() {
     const newDirection = index > page ? 1 : -1;
     setPage([index, newDirection]);
   };
+
+  const nextPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev + 1) % professionalPhotos.length);
+  };
+
+  const prevPhoto = () => {
+    setCurrentPhotoIndex((prev) =>
+      prev === 0 ? professionalPhotos.length - 1 : prev - 1,
+    );
+  };
+
+  const nextVideo = () => {
+    setCurrentVideoIndex((prev) => (prev + 1) % storyVideos.length);
+  };
+
+  const prevVideo = () => {
+    setCurrentVideoIndex((prev) =>
+      prev === 0 ? storyVideos.length - 1 : prev - 1,
+    );
+  };
+
+  // Auto-rotate photos every 4 seconds
+  React.useEffect(() => {
+    const photoInterval = setInterval(() => {
+      setCurrentPhotoIndex((prev) => (prev + 1) % professionalPhotos.length);
+    }, 4000);
+
+    return () => clearInterval(photoInterval);
+  }, [professionalPhotos.length]);
 
   // Show loading or error states
   if (loading) {
@@ -507,7 +593,7 @@ export default function Index() {
                 <div className="flex space-x-2 mt-4">
                   {coachData.personalQuotes.map((_, index) => (
                     <motion.button
-                      key={index}
+                      key={`quote-${index}`}
                       onClick={() => setActiveQuote(index)}
                       className={`w-2 h-2 rounded-full transition-colors ${
                         index === activeQuote ? "bg-primary" : "bg-muted"
@@ -547,7 +633,7 @@ export default function Index() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative z-10"
+                  className="relative z-50"
                 >
                   <Dialog
                     open={showStoryDialog}
@@ -557,71 +643,129 @@ export default function Index() {
                       <Button
                         variant="outline"
                         size="lg"
-                        className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary relative z-10"
+                        className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5 transition-all duration-200 relative z-50"
                       >
                         <Play className="mr-2 w-5 h-5" />
                         Watch My Story (2 min)
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-4xl w-full h-[80vh] p-0 overflow-hidden">
-                      <DialogHeader className="p-6 pb-0">
+                    <DialogContent className="max-w-4xl w-[95vw] max-h-[85vh] p-0 overflow-hidden">
+                      <DialogHeader className="p-6 pb-4 border-b border-border/50">
                         <DialogTitle className="flex items-center text-2xl">
                           <Play className="mr-3 w-6 h-6 text-primary" />
                           My Health Transformation Story
                         </DialogTitle>
-                        <DialogDescription className="text-muted-foreground">
+                        <DialogDescription className="text-muted-foreground mt-2">
                           A personal message from {coachData?.profile.name} - 2
                           minutes that could change your life
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="flex-1 p-6 pt-4">
-                        <div className="relative w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl overflow-hidden">
-                          {/* Video Placeholder */}
-                          <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                            className="absolute inset-0 bg-gradient-to-br from-background/90 to-background/70 backdrop-blur flex flex-col items-center justify-center text-center space-y-6"
-                          >
-                            <motion.div
-                              animate={{
-                                scale: [1, 1.05, 1],
-                                rotate: [0, 2, -2, 0],
-                              }}
-                              transition={{ duration: 3, repeat: Infinity }}
-                              className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl"
+                      <div className="p-6 flex-1 min-h-0">
+                        <div className="relative w-full h-[60vh] bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl overflow-hidden border border-border/20">
+                          {/* Dynamic Video Player */}
+                          <div className="relative w-full h-full">
+                            <motion.video
+                              key={currentVideoIndex}
+                              controls
+                              className="w-full h-full object-cover rounded-xl"
+                              poster={`https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=450&fit=crop&auto=format&q=80`}
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.5 }}
                             >
-                              <Play className="w-12 h-12 text-white ml-1" />
-                            </motion.div>
-                            <div className="space-y-4">
-                              <h3 className="text-2xl font-semibold text-foreground">
-                                Video Coming Soon
+                              <source
+                                src={storyVideos[currentVideoIndex].url}
+                                type="video/mp4"
+                              />
+                              Your browser does not support the video tag.
+                            </motion.video>
+
+                            {/* Video Info Overlay */}
+                            <motion.div
+                              key={currentVideoIndex}
+                              initial={{ opacity: 0, y: -20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
+                              className="absolute top-4 left-4 bg-background/95 backdrop-blur rounded-lg p-4 max-w-sm"
+                            >
+                              <h3 className="text-lg font-semibold text-foreground mb-1">
+                                {storyVideos[currentVideoIndex].title}
                               </h3>
-                              <p className="text-muted-foreground max-w-md">
-                                I'm currently preparing a personal video message
-                                to share my transformation story with you. In
-                                the meantime, you can read my journey in the
-                                sections below.
+                              <p className="text-sm text-muted-foreground mb-2">
+                                {storyVideos[currentVideoIndex].description}
                               </p>
-                              <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                              <div className="flex items-center space-x-2">
+                                <Clock className="w-4 h-4 text-primary" />
+                                <span className="text-sm text-primary font-medium">
+                                  {storyVideos[currentVideoIndex].duration}
+                                </span>
+                              </div>
+                            </motion.div>
+
+                            {/* Video Navigation */}
+                            <div className="absolute top-4 right-4 flex items-center space-x-2 z-10">
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={prevVideo}
+                                className="w-10 h-10 bg-background/95 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background transition-all shadow-lg"
                               >
-                                <Button
-                                  onClick={() => {
-                                    setShowStoryDialog(false);
+                                <ChevronLeft className="w-5 h-5" />
+                              </motion.button>
+
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={nextVideo}
+                                className="w-10 h-10 bg-background/95 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background transition-all shadow-lg"
+                              >
+                                <ChevronRight className="w-5 h-5" />
+                              </motion.button>
+                            </div>
+
+                            {/* Video Playlist Indicators */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+                              {storyVideos.map((video, index) => (
+                                <motion.button
+                                  key={`video-${index}`}
+                                  onClick={() => setCurrentVideoIndex(index)}
+                                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all backdrop-blur ${
+                                    index === currentVideoIndex
+                                      ? "bg-primary text-primary-foreground shadow-lg"
+                                      : "bg-background/80 text-foreground hover:bg-background/95"
+                                  }`}
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
+                                  Video {index + 1}
+                                </motion.button>
+                              ))}
+                            </div>
+
+                            {/* Read Story Alternative */}
+                            <motion.div
+                              className="absolute bottom-4 right-4 z-20"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setShowStoryDialog(false);
+                                  setTimeout(() => {
                                     document
                                       .getElementById("story")
                                       ?.scrollIntoView({ behavior: "smooth" });
-                                  }}
-                                  className="mt-4"
-                                >
-                                  <BookOpen className="mr-2 w-4 h-4" />
-                                  Read My Story Instead
-                                </Button>
-                              </motion.div>
-                            </div>
-                          </motion.div>
+                                  }, 100);
+                                }}
+                                className="bg-background/95 backdrop-blur border-border/50 hover:bg-background shadow-lg"
+                              >
+                                <BookOpen className="mr-2 w-4 h-4" />
+                                Read Story
+                              </Button>
+                            </motion.div>
+                          </div>
                         </div>
                       </div>
                     </DialogContent>
@@ -701,7 +845,7 @@ export default function Index() {
                   }}
                   className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl p-8 relative overflow-hidden border-2 border-primary/20"
                 >
-                  {/* Personal Photo Placeholder */}
+                  {/* Dynamic Photo Gallery */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -710,59 +854,141 @@ export default function Index() {
                   >
                     <motion.div
                       animate={glowPulse}
-                      className="absolute inset-0 bg-gradient-to-br from-background/90 to-background/70 backdrop-blur flex items-center justify-center"
+                      className="absolute inset-0 rounded-2xl overflow-hidden"
                     >
-                      <div className="text-center space-y-4">
-                        <motion.div
-                          animate={{
-                            scale: [1, 1.1, 1],
-                            rotate: [0, 5, -5, 0],
+                      {/* Photo Container with Navigation */}
+                      <div className="relative w-full h-full">
+                        <AnimatePresence mode="wait">
+                          <motion.img
+                            key={currentPhotoIndex}
+                            src={professionalPhotos[currentPhotoIndex].url}
+                            alt={professionalPhotos[currentPhotoIndex].caption}
+                            className="w-full h-full object-cover"
+                            initial={{ opacity: 0, scale: 1.1 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.6 }}
+                            onError={(e) => {
+                              // Fallback to placeholder if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                              const fallback =
+                                target.parentElement?.querySelector(
+                                  ".fallback-placeholder",
+                                ) as HTMLElement;
+                              if (fallback) fallback.style.display = "flex";
+                            }}
+                          />
+                        </AnimatePresence>
+
+                        {/* Photo Navigation Arrows */}
+                        <motion.button
+                          whileHover={{
+                            scale: 1.1,
+                            backgroundColor: "rgba(0,0,0,0.8)",
                           }}
-                          transition={{ duration: 3, repeat: Infinity }}
-                          className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto border-4 border-white/50 shadow-2xl"
+                          whileTap={{ scale: 0.9 }}
+                          onClick={prevPhoto}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/70 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background/90 transition-all z-10"
                         >
-                          <Camera className="w-12 h-12 text-white" />
-                        </motion.div>
-                        <motion.h3
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1, duration: 0.6 }}
-                          className="text-xl font-semibold text-foreground"
+                          <ChevronLeft className="w-4 h-4" />
+                        </motion.button>
+
+                        <motion.button
+                          whileHover={{
+                            scale: 1.1,
+                            backgroundColor: "rgba(0,0,0,0.8)",
+                          }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={nextPhoto}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/70 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background/90 transition-all z-10"
                         >
-                          {coachData.profile.name}
-                        </motion.h3>
-                        <motion.p
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1.2, duration: 0.6 }}
-                          className="text-muted-foreground"
-                        >
-                          {coachData.profile.description}
-                        </motion.p>
-                        <motion.div
-                          className="flex justify-center space-x-1"
-                          variants={staggerContainer}
-                          initial="hidden"
-                          animate="visible"
-                        >
-                          {[...Array(5)].map((_, i) => (
-                            <motion.div
-                              key={i}
-                              variants={fadeInUp}
-                              animate={{
-                                scale: [1, 1.2, 1],
-                                rotate: [0, 10, -10, 0],
-                              }}
-                              transition={{
-                                duration: 0.5,
-                                delay: i * 0.1,
-                                repeat: Infinity,
-                                repeatDelay: 3,
-                              }}
-                            >
-                              <Star className="w-4 h-4 fill-primary text-primary" />
-                            </motion.div>
+                          <ChevronRight className="w-4 h-4" />
+                        </motion.button>
+
+                        {/* Photo Indicators */}
+                        <div className="absolute top-2 left-1/2 -translate-x-1/2 flex space-x-1 z-10">
+                          {professionalPhotos.map((_, index) => (
+                            <motion.button
+                              key={`photo-${index}`}
+                              onClick={() => setCurrentPhotoIndex(index)}
+                              className={`w-2 h-2 rounded-full transition-all ${
+                                index === currentPhotoIndex
+                                  ? "bg-white scale-125"
+                                  : "bg-white/50 hover:bg-white/75"
+                              }`}
+                              whileHover={{ scale: 1.2 }}
+                              whileTap={{ scale: 0.9 }}
+                            />
                           ))}
+                        </div>
+
+                        {/* Fallback placeholder if image doesn't load */}
+                        <motion.div
+                          className="fallback-placeholder absolute inset-0 bg-gradient-to-br from-background/95 to-background/85 backdrop-blur-sm flex items-center justify-center text-center"
+                          style={{ display: "none" }}
+                        >
+                          <div className="space-y-4">
+                            <motion.div
+                              animate={{
+                                scale: [1, 1.1, 1],
+                                rotate: [0, 5, -5, 0],
+                              }}
+                              transition={{ duration: 3, repeat: Infinity }}
+                              className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto border-4 border-white/50 shadow-2xl"
+                            >
+                              <Camera className="w-10 h-10 text-white" />
+                            </motion.div>
+                            <div>
+                              <h3 className="text-lg font-semibold text-foreground mb-1">
+                                {coachData.profile.name}
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                {coachData.profile.description}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        {/* Dynamic Overlay with photo info */}
+                        <motion.div
+                          key={currentPhotoIndex}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3, duration: 0.6 }}
+                          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/95 via-background/80 to-transparent p-4 text-center"
+                        >
+                          <motion.h3 className="text-lg font-semibold text-foreground mb-1">
+                            {professionalPhotos[currentPhotoIndex].caption}
+                          </motion.h3>
+                          <motion.p className="text-xs text-muted-foreground mb-2">
+                            {professionalPhotos[currentPhotoIndex].location}
+                          </motion.p>
+                          <motion.div
+                            className="flex justify-center space-x-1 mb-2"
+                            variants={staggerContainer}
+                            initial="hidden"
+                            animate="visible"
+                          >
+                            {[...Array(5)].map((_, i) => (
+                              <motion.div
+                                key={`photo-star-${i}`}
+                                variants={fadeInUp}
+                                animate={{
+                                  scale: [1, 1.2, 1],
+                                  rotate: [0, 10, -10, 0],
+                                }}
+                                transition={{
+                                  duration: 0.5,
+                                  delay: i * 0.1,
+                                  repeat: Infinity,
+                                  repeatDelay: 3,
+                                }}
+                              >
+                                <Star className="w-3 h-3 fill-primary text-primary" />
+                              </motion.div>
+                            ))}
+                          </motion.div>
                         </motion.div>
                       </div>
                     </motion.div>
@@ -868,7 +1094,7 @@ export default function Index() {
             <div className="flex space-x-1.5 sm:space-x-2 flex-1 justify-center max-w-24">
               {coachData.storyChapters.map((_, index) => (
                 <motion.button
-                  key={index}
+                  key={`story-nav-${index}`}
                   onClick={() => goToStory(index)}
                   className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 flex-shrink-0 ${
                     index === page
@@ -1210,7 +1436,7 @@ export default function Index() {
                   >
                     {[...Array(5)].map((_, i) => (
                       <motion.div
-                        key={i}
+                        key={`promise-star-${i}`}
                         variants={fadeInUp}
                         animate={{
                           scale: [1, 1.2, 1],
