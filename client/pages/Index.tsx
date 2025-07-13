@@ -761,7 +761,7 @@ export default function Index() {
             >
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-muted-foreground">
-                  Chapter {page + 1} of {storyChapters.length}
+                  Chapter {page + 1} of {coachData.storyChapters.length}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   {Math.round(progressPercentage)}%
