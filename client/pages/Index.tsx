@@ -554,9 +554,21 @@ export default function Index() {
                 className="grid grid-cols-3 gap-4 text-center"
               >
                 {[
-                  { number: "10+", label: "Years Experience", icon: Clock },
-                  { number: "500+", label: "Lives Changed", icon: Users },
-                  { number: "95%", label: "Success Rate", icon: TrendingUp },
+                  {
+                    number: `${coachData.profile.yearsExperience}+`,
+                    label: "Years Experience",
+                    icon: Clock,
+                  },
+                  {
+                    number: `${coachData.profile.livesChanged}+`,
+                    label: "Lives Changed",
+                    icon: Users,
+                  },
+                  {
+                    number: `${coachData.profile.successRate}%`,
+                    label: "Success Rate",
+                    icon: TrendingUp,
+                  },
                 ].map((stat, index) => (
                   <motion.div
                     key={stat.label}
