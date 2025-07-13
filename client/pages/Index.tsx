@@ -1030,36 +1030,7 @@ export default function Index() {
               </motion.p>
 
               <motion.div variants={staggerContainer} className="space-y-6">
-                {[
-                  {
-                    icon: Heart,
-                    title: "Empathy-First Approach",
-                    description:
-                      "I've been where you are. My struggles inform my compassion.",
-                    color: "text-red-500",
-                  },
-                  {
-                    icon: Target,
-                    title: "Personalized Strategy",
-                    description:
-                      "Your plan is crafted specifically for your life, goals, and challenges.",
-                    color: "text-primary",
-                  },
-                  {
-                    icon: MessageCircle,
-                    title: "Always Available",
-                    description:
-                      "Real support means being there when you need guidance most.",
-                    color: "text-secondary",
-                  },
-                  {
-                    icon: TrendingUp,
-                    title: "Proven Results",
-                    description:
-                      "My methods work because they're tested by my own transformation.",
-                    color: "text-orange-500",
-                  },
-                ].map((approach, index) => (
+                {coachData.approach.map((approach, index) => (
                   <motion.div
                     key={approach.title}
                     variants={fadeInUp}
