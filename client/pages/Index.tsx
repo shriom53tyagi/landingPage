@@ -486,15 +486,15 @@ export default function Index() {
                   <Quote className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-lg italic text-foreground mb-2">
-                      {personalQuotes[activeQuote].text}
+                      {coachData.personalQuotes[activeQuote].text}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      — {personalQuotes[activeQuote].context}
+                      — {coachData.personalQuotes[activeQuote].context}
                     </p>
                   </div>
                 </motion.div>
                 <div className="flex space-x-2 mt-4">
-                  {personalQuotes.map((_, index) => (
+                  {coachData.personalQuotes.map((_, index) => (
                     <motion.button
                       key={index}
                       onClick={() => setActiveQuote(index)}
