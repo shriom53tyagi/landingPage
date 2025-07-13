@@ -319,8 +319,9 @@ export default function Index() {
     setPage([index, newDirection]);
   };
 
-  const currentChapter = storyChapters[page];
-  const progressPercentage = ((page + 1) / storyChapters.length) * 100;
+  const currentChapter = coachData.storyChapters[page];
+  const progressPercentage =
+    ((page + 1) / coachData.storyChapters.length) * 100;
 
   return (
     <div className="min-h-screen bg-background">
