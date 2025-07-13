@@ -1499,10 +1499,10 @@ export default function Index() {
                 </motion.div>
                 <div>
                   <span className="text-xl font-semibold text-foreground">
-                    Dr. Sarah Chen
+                    {coachData.profile.name}
                   </span>
                   <p className="text-sm text-muted-foreground">
-                    Your Health Transformation Partner
+                    {coachData.profile.description}
                   </p>
                 </div>
               </motion.div>
@@ -1510,14 +1510,14 @@ export default function Index() {
                 variants={fadeInUp}
                 className="text-muted-foreground mb-4 max-w-md"
               >
-                Transforming lives through personalized health coaching,
-                authentic care, and proven strategies based on real experience.
+                {coachData.footerDescription}
               </motion.p>
               <motion.p
                 variants={fadeInUp}
                 className="text-sm text-muted-foreground"
               >
-                © 2024 Dr. Sarah Chen Health Coaching. All rights reserved.
+                © 2024 {coachData.profile.name} Health Coaching. All rights
+                reserved.
               </motion.p>
             </motion.div>
 
