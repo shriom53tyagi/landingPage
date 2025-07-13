@@ -292,6 +292,33 @@ export default function Index() {
     setPage([index, newDirection]);
   };
 
+  // Show loading or error states
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"
+          />
+          <p className="text-muted-foreground">Loading coach profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !coachData) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive mb-4">Failed to load coach profile</p>
+          <p className="text-muted-foreground">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   const currentChapter = coachData.storyChapters[page];
   const progressPercentage =
     ((page + 1) / coachData.storyChapters.length) * 100;
