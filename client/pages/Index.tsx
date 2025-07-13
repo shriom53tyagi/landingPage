@@ -854,23 +854,23 @@ export default function Index() {
           {/* Story Navigation */}
           <motion.div
             variants={fadeInUp}
-            className="flex justify-center items-center space-x-4 mb-12"
+            className="flex justify-center items-center gap-3 sm:gap-4 mb-12 px-4"
           >
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => paginate(-1)}
-              className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
 
-            <div className="flex space-x-2">
+            <div className="flex space-x-1.5 sm:space-x-2 flex-1 justify-center max-w-24">
               {coachData.storyChapters.map((_, index) => (
                 <motion.button
                   key={index}
                   onClick={() => goToStory(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 flex-shrink-0 ${
                     index === page
                       ? "bg-primary scale-125"
                       : "bg-muted hover:bg-primary/50"
@@ -885,9 +885,9 @@ export default function Index() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => paginate(1)}
-              className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
           </motion.div>
 
@@ -1031,29 +1031,31 @@ export default function Index() {
           {/* Story Navigation Buttons */}
           <motion.div
             variants={fadeInUp}
-            className="flex justify-center items-center space-x-4 mt-12 relative z-30"
+            className="flex justify-center items-center gap-3 sm:gap-4 mt-12 relative z-30 px-4"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 variant="outline"
                 size="lg"
                 onClick={() => paginate(-1)}
-                className="flex items-center space-x-2"
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4"
               >
-                <ChevronLeft className="w-5 h-5" />
-                <span className="hidden sm:inline">Previous Chapter</span>
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Previous</span>
+                <span className="sm:hidden">Prev</span>
               </Button>
             </motion.div>
 
-            <motion.div className="text-center px-2 sm:px-6">
-              <p className="text-sm text-muted-foreground hidden sm:block">
+            <motion.div className="text-center px-1 sm:px-6 flex-1 max-w-32">
+              <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block truncate">
                 {currentChapter.phase}
               </p>
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
+                className="flex justify-center"
               >
-                <ArrowDown className="w-5 sm:w-6 h-5 sm:h-6 text-primary mx-auto mt-1 sm:mt-2" />
+                <ArrowDown className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
               </motion.div>
             </motion.div>
 
@@ -1061,10 +1063,11 @@ export default function Index() {
               <Button
                 size="lg"
                 onClick={() => paginate(1)}
-                className="flex items-center space-x-2"
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4"
               >
-                <span className="hidden sm:inline">Next Chapter</span>
-                <ChevronRight className="w-5 h-5" />
+                <span className="hidden sm:inline">Next</span>
+                <span className="sm:hidden">Next</span>
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </motion.div>
           </motion.div>
