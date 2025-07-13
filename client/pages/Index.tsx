@@ -518,8 +518,8 @@ export default function Index() {
                 className="grid grid-cols-3 gap-4 text-center"
               >
                 {[
-                  { number: "500+", label: "Lives Changed", icon: Users },
                   { number: "10+", label: "Years Experience", icon: Clock },
+                  { number: "500+", label: "Lives Changed", icon: Users },
                   { number: "95%", label: "Success Rate", icon: TrendingUp },
                 ].map((stat, index) => (
                   <motion.div
