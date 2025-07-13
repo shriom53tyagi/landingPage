@@ -1094,7 +1094,7 @@ export default function Index() {
             <div className="flex space-x-1.5 sm:space-x-2 flex-1 justify-center max-w-24">
               {coachData.storyChapters.map((_, index) => (
                 <motion.button
-                  key={index}
+                  key={`story-nav-${index}`}
                   onClick={() => goToStory(index)}
                   className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 flex-shrink-0 ${
                     index === page
@@ -1436,7 +1436,7 @@ export default function Index() {
                   >
                     {[...Array(5)].map((_, i) => (
                       <motion.div
-                        key={i}
+                        key={`promise-star-${i}`}
                         variants={fadeInUp}
                         animate={{
                           scale: [1, 1.2, 1],
