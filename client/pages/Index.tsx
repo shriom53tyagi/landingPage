@@ -356,7 +356,7 @@ export default function Index() {
               </motion.div>
               <div>
                 <span className="text-xl font-semibold text-foreground">
-                  Dr. Sarah Chen
+                  {coachData.profile.name}
                 </span>
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -364,7 +364,7 @@ export default function Index() {
                   transition={{ delay: 0.5 }}
                   className="text-xs text-muted-foreground"
                 >
-                  Certified Health Coach
+                  {coachData.profile.title}
                 </motion.p>
               </div>
             </motion.div>
