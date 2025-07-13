@@ -644,10 +644,10 @@ export default function Index() {
                       x: [0, 5, 0],
                     }}
                     transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                    className="absolute top-4 right-4 bg-background/90 backdrop-blur rounded-lg p-2 border border-primary/20 shadow-lg"
+                    className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-background/90 backdrop-blur rounded-lg p-1.5 sm:p-2 border border-primary/20 shadow-lg"
                   >
-                    <div className="flex items-center space-x-2">
-                      <Shield className="w-4 h-4 text-primary" />
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      <Shield className="w-3 sm:w-4 h-3 sm:h-4 text-primary" />
                       <span className="text-xs font-medium text-foreground">
                         Certified
                       </span>
@@ -660,10 +660,10 @@ export default function Index() {
                       x: [0, -5, 0],
                     }}
                     transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-                    className="absolute bottom-4 left-4 bg-background/90 backdrop-blur rounded-lg p-2 border border-secondary/20 shadow-lg"
+                    className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 bg-background/90 backdrop-blur rounded-lg p-1.5 sm:p-2 border border-secondary/20 shadow-lg"
                   >
-                    <div className="flex items-center space-x-2">
-                      <Award className="w-4 h-4 text-secondary" />
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      <Award className="w-3 sm:w-4 h-3 sm:h-4 text-secondary" />
                       <span className="text-xs font-medium text-foreground">
                         10+ Years
                       </span>
