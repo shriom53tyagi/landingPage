@@ -1290,20 +1290,20 @@ export default function Index() {
                   {
                     icon: Phone,
                     label: "Call Me Directly",
-                    value: "(555) 123-4567",
-                    subtext: "Available Mon-Fri, 9AM-6PM PST",
+                    value: coachData.contact.phone,
+                    subtext: coachData.contact.availability,
                   },
                   {
                     icon: Mail,
                     label: "Email Me",
-                    value: "sarah@healthcoachpro.com",
-                    subtext: "I respond within 24 hours",
+                    value: coachData.contact.email,
+                    subtext: coachData.contact.responseTime,
                   },
                   {
                     icon: MapPin,
                     label: "Meet In-Person or Online",
-                    value: "San Francisco, CA",
-                    subtext: "Virtual sessions available worldwide",
+                    value: coachData.contact.location,
+                    subtext: coachData.contact.meetingTypes,
                   },
                 ].map((contact, index) => (
                   <motion.div
@@ -1459,7 +1459,9 @@ export default function Index() {
                     >
                       <p className="text-sm text-muted-foreground text-center italic">
                         "I personally read and respond to every message within
-                        24 hours. Your story matters to me." - Sarah
+                        24 hours. Your story matters to me." -{" "}
+                        {coachData.profile.name.split(" ")[1] ||
+                          coachData.profile.name}
                       </p>
                     </motion.div>
                   </CardContent>
