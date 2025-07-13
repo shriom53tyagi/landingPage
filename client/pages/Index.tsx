@@ -500,11 +500,12 @@ export default function Index() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  className="relative z-10"
                 >
                   <Button
                     variant="outline"
                     size="lg"
-                    className="text-lg px-8 py-6 border-2 border-primary/30 hover:border-primary"
+                    className="text-lg px-8 py-6 border-2 border-primary/30 hover:border-primary relative z-10"
                   >
                     <Play className="mr-2 w-5 h-5" />
                     Watch My Story (2 min)
