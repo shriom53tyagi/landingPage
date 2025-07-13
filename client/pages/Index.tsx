@@ -720,9 +720,9 @@ export default function Index() {
                     >
                       {/* Photo Container */}
                       <div className="relative w-full h-full">
-                        {/* Replace this with actual photo */}
+                        {/* Professional placeholder photo */}
                         <motion.img
-                          src="/dr-sarah-chen.jpg"
+                          src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
                           alt={`${coachData.profile.name} - Health Coach`}
                           className="w-full h-full object-cover"
                           onError={(e) => {
