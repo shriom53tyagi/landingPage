@@ -12,6 +12,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useCoachData } from "@/hooks/use-coach-data";
 import { getIcon } from "@/lib/icon-mapper";
 import {
@@ -139,6 +147,7 @@ export default function Index() {
   const [activeQuote, setActiveQuote] = useState(0);
   const [currentStory, setCurrentStory] = useState(0);
   const [expandedStory, setExpandedStory] = useState<number | null>(null);
+  const [showStoryDialog, setShowStoryDialog] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -540,14 +549,83 @@ export default function Index() {
                   whileTap={{ scale: 0.95 }}
                   className="relative z-10"
                 >
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary relative z-10"
+                  <Dialog
+                    open={showStoryDialog}
+                    onOpenChange={setShowStoryDialog}
                   >
-                    <Play className="mr-2 w-5 h-5" />
-                    Watch My Story (2 min)
-                  </Button>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary relative z-10"
+                      >
+                        <Play className="mr-2 w-5 h-5" />
+                        Watch My Story (2 min)
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full h-[80vh] p-0 overflow-hidden">
+                      <DialogHeader className="p-6 pb-0">
+                        <DialogTitle className="flex items-center text-2xl">
+                          <Play className="mr-3 w-6 h-6 text-primary" />
+                          My Health Transformation Story
+                        </DialogTitle>
+                        <DialogDescription className="text-muted-foreground">
+                          A personal message from {coachData?.profile.name} - 2
+                          minutes that could change your life
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex-1 p-6 pt-4">
+                        <div className="relative w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl overflow-hidden">
+                          {/* Video Placeholder */}
+                          <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 bg-gradient-to-br from-background/90 to-background/70 backdrop-blur flex flex-col items-center justify-center text-center space-y-6"
+                          >
+                            <motion.div
+                              animate={{
+                                scale: [1, 1.05, 1],
+                                rotate: [0, 2, -2, 0],
+                              }}
+                              transition={{ duration: 3, repeat: Infinity }}
+                              className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl"
+                            >
+                              <Play className="w-12 h-12 text-white ml-1" />
+                            </motion.div>
+                            <div className="space-y-4">
+                              <h3 className="text-2xl font-semibold text-foreground">
+                                Video Coming Soon
+                              </h3>
+                              <p className="text-muted-foreground max-w-md">
+                                I'm currently preparing a personal video message
+                                to share my transformation story with you. In
+                                the meantime, you can read my journey in the
+                                sections below.
+                              </p>
+                              <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                              >
+                                <Button
+                                  onClick={() => {
+                                    setShowStoryDialog(false);
+                                    document
+                                      .getElementById("story")
+                                      ?.scrollIntoView({ behavior: "smooth" });
+                                  }}
+                                  className="mt-4"
+                                >
+                                  <BookOpen className="mr-2 w-4 h-4" />
+                                  Read My Story Instead
+                                </Button>
+                              </motion.div>
+                            </div>
+                          </motion.div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </motion.div>
               </motion.div>
 
@@ -776,23 +854,23 @@ export default function Index() {
           {/* Story Navigation */}
           <motion.div
             variants={fadeInUp}
-            className="flex justify-center items-center space-x-4 mb-12"
+            className="flex justify-center items-center gap-3 sm:gap-4 mb-12 px-4"
           >
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => paginate(-1)}
-              className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
 
-            <div className="flex space-x-2">
+            <div className="flex space-x-1.5 sm:space-x-2 flex-1 justify-center max-w-24">
               {coachData.storyChapters.map((_, index) => (
                 <motion.button
                   key={index}
                   onClick={() => goToStory(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 flex-shrink-0 ${
                     index === page
                       ? "bg-primary scale-125"
                       : "bg-muted hover:bg-primary/50"
@@ -807,9 +885,9 @@ export default function Index() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => paginate(1)}
-              className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow flex-shrink-0"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
           </motion.div>
 
@@ -953,29 +1031,31 @@ export default function Index() {
           {/* Story Navigation Buttons */}
           <motion.div
             variants={fadeInUp}
-            className="flex justify-center items-center space-x-4 mt-12 relative z-30"
+            className="flex justify-center items-center gap-3 sm:gap-4 mt-12 relative z-30 px-4"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 variant="outline"
                 size="lg"
                 onClick={() => paginate(-1)}
-                className="flex items-center space-x-2"
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4"
               >
-                <ChevronLeft className="w-5 h-5" />
-                <span className="hidden sm:inline">Previous Chapter</span>
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Previous</span>
+                <span className="sm:hidden">Prev</span>
               </Button>
             </motion.div>
 
-            <motion.div className="text-center px-2 sm:px-6">
-              <p className="text-sm text-muted-foreground hidden sm:block">
+            <motion.div className="text-center px-1 sm:px-6 flex-1 max-w-32">
+              <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block truncate">
                 {currentChapter.phase}
               </p>
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
+                className="flex justify-center"
               >
-                <ArrowDown className="w-5 sm:w-6 h-5 sm:h-6 text-primary mx-auto mt-1 sm:mt-2" />
+                <ArrowDown className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
               </motion.div>
             </motion.div>
 
@@ -983,10 +1063,11 @@ export default function Index() {
               <Button
                 size="lg"
                 onClick={() => paginate(1)}
-                className="flex items-center space-x-2"
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4"
               >
-                <span className="hidden sm:inline">Next Chapter</span>
-                <ChevronRight className="w-5 h-5" />
+                <span className="hidden sm:inline">Next</span>
+                <span className="sm:hidden">Next</span>
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </motion.div>
           </motion.div>
@@ -1117,8 +1198,7 @@ export default function Index() {
                     transition={{ delay: 0.5, duration: 0.6 }}
                     className="text-muted-foreground mb-6 italic"
                   >
-                    "I will never ask you to do something I haven't done myself.
-                    Your success is built on my authentic experience."
+                    "{coachData.promise}"
                   </motion.p>
 
                   <motion.div
@@ -1155,7 +1235,7 @@ export default function Index() {
                     transition={{ delay: 0.7, duration: 0.6 }}
                     className="text-sm text-muted-foreground"
                   >
-                    — Dr. Sarah Chen, Your Health Partner
+                    — {coachData.profile.name}, Your Health Partner
                   </motion.p>
                 </motion.div>
               </motion.div>
@@ -1209,20 +1289,20 @@ export default function Index() {
                   {
                     icon: Phone,
                     label: "Call Me Directly",
-                    value: "(555) 123-4567",
-                    subtext: "Available Mon-Fri, 9AM-6PM PST",
+                    value: coachData.contact.phone,
+                    subtext: coachData.contact.availability,
                   },
                   {
                     icon: Mail,
                     label: "Email Me",
-                    value: "sarah@healthcoachpro.com",
-                    subtext: "I respond within 24 hours",
+                    value: coachData.contact.email,
+                    subtext: coachData.contact.responseTime,
                   },
                   {
                     icon: MapPin,
                     label: "Meet In-Person or Online",
-                    value: "San Francisco, CA",
-                    subtext: "Virtual sessions available worldwide",
+                    value: coachData.contact.location,
+                    subtext: coachData.contact.meetingTypes,
                   },
                 ].map((contact, index) => (
                   <motion.div
@@ -1378,7 +1458,9 @@ export default function Index() {
                     >
                       <p className="text-sm text-muted-foreground text-center italic">
                         "I personally read and respond to every message within
-                        24 hours. Your story matters to me." - Sarah
+                        24 hours. Your story matters to me." -{" "}
+                        {coachData.profile.name.split(" ")[1] ||
+                          coachData.profile.name}
                       </p>
                     </motion.div>
                   </CardContent>
@@ -1418,10 +1500,10 @@ export default function Index() {
                 </motion.div>
                 <div>
                   <span className="text-xl font-semibold text-foreground">
-                    Dr. Sarah Chen
+                    {coachData.profile.name}
                   </span>
                   <p className="text-sm text-muted-foreground">
-                    Your Health Transformation Partner
+                    {coachData.profile.description}
                   </p>
                 </div>
               </motion.div>
@@ -1429,14 +1511,14 @@ export default function Index() {
                 variants={fadeInUp}
                 className="text-muted-foreground mb-4 max-w-md"
               >
-                Transforming lives through personalized health coaching,
-                authentic care, and proven strategies based on real experience.
+                {coachData.footerDescription}
               </motion.p>
               <motion.p
                 variants={fadeInUp}
                 className="text-sm text-muted-foreground"
               >
-                © 2024 Dr. Sarah Chen Health Coaching. All rights reserved.
+                © 2024 {coachData.profile.name} Health Coaching. All rights
+                reserved.
               </motion.p>
             </motion.div>
 
