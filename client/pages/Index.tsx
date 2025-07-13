@@ -145,6 +145,9 @@ export default function Index() {
   const x = useSpring(mouseX, { stiffness: 100, damping: 20 });
   const y = useSpring(mouseY, { stiffness: 100, damping: 20 });
 
+  // Fetch coach data
+  const { coachData, loading, error } = useCoachData();
+
   const personalQuotes = [
     {
       text: "Every client's journey is unique, and I'm here to walk alongside you every step of the way.",
