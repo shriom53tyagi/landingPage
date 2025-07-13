@@ -380,6 +380,15 @@ export default function Index() {
     );
   };
 
+  // Auto-rotate photos every 4 seconds
+  React.useEffect(() => {
+    const photoInterval = setInterval(() => {
+      setCurrentPhotoIndex((prev) => (prev + 1) % professionalPhotos.length);
+    }, 4000);
+
+    return () => clearInterval(photoInterval);
+  }, [professionalPhotos.length]);
+
   // Show loading or error states
   if (loading) {
     return (
