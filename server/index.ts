@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { getCoach, getCoachById } from "./routes/coach";
 
 export function createServer() {
   const app = express();
