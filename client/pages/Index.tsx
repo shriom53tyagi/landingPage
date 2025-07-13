@@ -552,7 +552,10 @@ export default function Index() {
               </motion.div>
             </motion.div>
 
-            <motion.div variants={fadeInRight} className="relative">
+            <motion.div
+              variants={fadeInRight}
+              className="relative lg:order-2 order-1"
+            >
               <motion.div
                 onMouseMove={handleMouseMove}
                 style={{
