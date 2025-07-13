@@ -653,58 +653,110 @@ export default function Index() {
                       </DialogHeader>
                       <div className="p-6 flex-1 min-h-0">
                         <div className="relative w-full h-[60vh] bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl overflow-hidden border border-border/20">
-                          {/* Video Placeholder */}
-                          <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                            className="absolute inset-0 bg-gradient-to-br from-background/95 to-background/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-8"
-                          >
-                            <motion.div
-                              animate={{
-                                scale: [1, 1.05, 1],
-                                rotate: [0, 2, -2, 0],
-                              }}
-                              transition={{ duration: 3, repeat: Infinity }}
-                              className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl mb-6"
+                          {/* Dynamic Video Player */}
+                          <div className="relative w-full h-full">
+                            <motion.video
+                              key={currentVideoIndex}
+                              controls
+                              className="w-full h-full object-cover rounded-xl"
+                              poster={`https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=450&fit=crop&auto=format&q=80`}
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.5 }}
                             >
-                              <Play className="w-8 h-8 sm:w-12 sm:h-12 text-white ml-1" />
-                            </motion.div>
-                            <div className="space-y-4 max-w-lg">
-                              <h3 className="text-xl sm:text-2xl font-semibold text-foreground">
-                                Video Coming Soon
+                              <source
+                                src={storyVideos[currentVideoIndex].url}
+                                type="video/mp4"
+                              />
+                              Your browser does not support the video tag.
+                            </motion.video>
+
+                            {/* Video Info Overlay */}
+                            <motion.div
+                              key={currentVideoIndex}
+                              initial={{ opacity: 0, y: -20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
+                              className="absolute top-4 left-4 bg-background/95 backdrop-blur rounded-lg p-4 max-w-sm"
+                            >
+                              <h3 className="text-lg font-semibold text-foreground mb-1">
+                                {storyVideos[currentVideoIndex].title}
                               </h3>
-                              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                                I'm currently preparing a personal video message
-                                to share my transformation story with you. In
-                                the meantime, you can read my journey in the
-                                sections below.
+                              <p className="text-sm text-muted-foreground mb-2">
+                                {storyVideos[currentVideoIndex].description}
                               </p>
-                              <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="pt-2"
+                              <div className="flex items-center space-x-2">
+                                <Clock className="w-4 h-4 text-primary" />
+                                <span className="text-sm text-primary font-medium">
+                                  {storyVideos[currentVideoIndex].duration}
+                                </span>
+                              </div>
+                            </motion.div>
+
+                            {/* Video Navigation */}
+                            <div className="absolute top-4 right-4 flex items-center space-x-2 z-10">
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={prevVideo}
+                                className="w-10 h-10 bg-background/95 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background transition-all shadow-lg"
                               >
-                                <Button
-                                  onClick={() => {
-                                    setShowStoryDialog(false);
-                                    setTimeout(() => {
-                                      document
-                                        .getElementById("story")
-                                        ?.scrollIntoView({
-                                          behavior: "smooth",
-                                        });
-                                    }, 100);
-                                  }}
-                                  size="lg"
-                                  className="w-full sm:w-auto"
-                                >
-                                  <BookOpen className="mr-2 w-4 h-4" />
-                                  Read My Story Instead
-                                </Button>
-                              </motion.div>
+                                <ChevronLeft className="w-5 h-5" />
+                              </motion.button>
+
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={nextVideo}
+                                className="w-10 h-10 bg-background/95 backdrop-blur rounded-full flex items-center justify-center text-foreground hover:bg-background transition-all shadow-lg"
+                              >
+                                <ChevronRight className="w-5 h-5" />
+                              </motion.button>
                             </div>
-                          </motion.div>
+
+                            {/* Video Playlist Indicators */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+                              {storyVideos.map((video, index) => (
+                                <motion.button
+                                  key={index}
+                                  onClick={() => setCurrentVideoIndex(index)}
+                                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all backdrop-blur ${
+                                    index === currentVideoIndex
+                                      ? "bg-primary text-primary-foreground shadow-lg"
+                                      : "bg-background/80 text-foreground hover:bg-background/95"
+                                  }`}
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
+                                  Video {index + 1}
+                                </motion.button>
+                              ))}
+                            </div>
+
+                            {/* Read Story Alternative */}
+                            <motion.div
+                              className="absolute bottom-4 right-4 z-20"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setShowStoryDialog(false);
+                                  setTimeout(() => {
+                                    document
+                                      .getElementById("story")
+                                      ?.scrollIntoView({ behavior: "smooth" });
+                                  }, 100);
+                                }}
+                                className="bg-background/95 backdrop-blur border-border/50 hover:bg-background shadow-lg"
+                              >
+                                <BookOpen className="mr-2 w-4 h-4" />
+                                Read Story
+                              </Button>
+                            </motion.div>
+                          </div>
                         </div>
                       </div>
                     </DialogContent>
