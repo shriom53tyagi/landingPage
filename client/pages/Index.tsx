@@ -563,25 +563,25 @@ export default function Index() {
                         Watch My Story (2 min)
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-4xl w-full h-[80vh] p-0 overflow-hidden">
-                      <DialogHeader className="p-6 pb-0">
+                    <DialogContent className="max-w-4xl w-[95vw] max-h-[85vh] p-0 overflow-hidden">
+                      <DialogHeader className="p-6 pb-4 border-b border-border/50">
                         <DialogTitle className="flex items-center text-2xl">
                           <Play className="mr-3 w-6 h-6 text-primary" />
                           My Health Transformation Story
                         </DialogTitle>
-                        <DialogDescription className="text-muted-foreground">
+                        <DialogDescription className="text-muted-foreground mt-2">
                           A personal message from {coachData?.profile.name} - 2
                           minutes that could change your life
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="flex-1 p-6 pt-4">
-                        <div className="relative w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl overflow-hidden">
+                      <div className="p-6 flex-1 min-h-0">
+                        <div className="relative w-full h-[60vh] bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl overflow-hidden border border-border/20">
                           {/* Video Placeholder */}
                           <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.5 }}
-                            className="absolute inset-0 bg-gradient-to-br from-background/90 to-background/70 backdrop-blur flex flex-col items-center justify-center text-center space-y-6"
+                            className="absolute inset-0 bg-gradient-to-br from-background/95 to-background/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-8"
                           >
                             <motion.div
                               animate={{
@@ -589,15 +589,15 @@ export default function Index() {
                                 rotate: [0, 2, -2, 0],
                               }}
                               transition={{ duration: 3, repeat: Infinity }}
-                              className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl"
+                              className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl mb-6"
                             >
-                              <Play className="w-12 h-12 text-white ml-1" />
+                              <Play className="w-8 h-8 sm:w-12 sm:h-12 text-white ml-1" />
                             </motion.div>
-                            <div className="space-y-4">
-                              <h3 className="text-2xl font-semibold text-foreground">
+                            <div className="space-y-4 max-w-lg">
+                              <h3 className="text-xl sm:text-2xl font-semibold text-foreground">
                                 Video Coming Soon
                               </h3>
-                              <p className="text-muted-foreground max-w-md">
+                              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                                 I'm currently preparing a personal video message
                                 to share my transformation story with you. In
                                 the meantime, you can read my journey in the
@@ -606,15 +606,21 @@ export default function Index() {
                               <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
+                                className="pt-2"
                               >
                                 <Button
                                   onClick={() => {
                                     setShowStoryDialog(false);
-                                    document
-                                      .getElementById("story")
-                                      ?.scrollIntoView({ behavior: "smooth" });
+                                    setTimeout(() => {
+                                      document
+                                        .getElementById("story")
+                                        ?.scrollIntoView({
+                                          behavior: "smooth",
+                                        });
+                                    }, 100);
                                   }}
-                                  className="mt-4"
+                                  size="lg"
+                                  className="w-full sm:w-auto"
                                 >
                                   <BookOpen className="mr-2 w-4 h-4" />
                                   Read My Story Instead
