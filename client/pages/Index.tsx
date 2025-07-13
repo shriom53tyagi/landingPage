@@ -12,6 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useCoachData } from "@/hooks/use-coach-data";
+import { getIcon } from "@/lib/icon-mapper";
 import {
   Heart,
   Users,
