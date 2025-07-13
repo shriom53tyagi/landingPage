@@ -18,5 +18,9 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Coach API routes
+  app.get("/api/coach", getCoach);
+  app.get("/api/coach/:id", getCoachById);
+
   return app;
 }
