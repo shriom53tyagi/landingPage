@@ -851,7 +851,12 @@ export default function Index() {
                           transition={{ duration: 3, repeat: Infinity }}
                           className={`w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-lg`}
                         >
-                          <currentChapter.icon className="w-8 h-8 text-white" />
+                          {(() => {
+                            const IconComponent = getIcon(currentChapter.icon);
+                            return (
+                              <IconComponent className="w-8 h-8 text-white" />
+                            );
+                          })()}
                         </motion.div>
                       </div>
 
