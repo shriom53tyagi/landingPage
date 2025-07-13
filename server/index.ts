@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { getCoach, getCoachById } from "./routes/coach";
 
 export function createServer() {
   const app = express();
@@ -16,6 +17,10 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Coach API routes
+  app.get("/api/coach", getCoach);
+  app.get("/api/coach/:id", getCoachById);
 
   return app;
 }

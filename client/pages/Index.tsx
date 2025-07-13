@@ -12,6 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useCoachData } from "@/hooks/use-coach-data";
+import { getIcon } from "@/lib/icon-mapper";
 import {
   Heart,
   Users,
@@ -142,6 +144,11 @@ export default function Index() {
   const mouseY = useMotionValue(0);
   const x = useSpring(mouseX, { stiffness: 100, damping: 20 });
   const y = useSpring(mouseY, { stiffness: 100, damping: 20 });
+  const rotateX = useTransform(y, [-100, 100], [10, -10]);
+  const rotateY = useTransform(x, [-100, 100], [-10, 10]);
+
+  // Fetch coach data
+  const { coachData, loading, error } = useCoachData();
 
   const personalQuotes = [
     {
@@ -162,7 +169,7 @@ export default function Index() {
     {
       id: 1,
       year: "2012",
-      phase: "The Breaking Point",
+      phase: "",
       title: "When Everything Fell Apart",
       icon: Mountain,
       color: "from-red-500/30 to-orange-500/30",
@@ -287,8 +294,36 @@ export default function Index() {
     setPage([index, newDirection]);
   };
 
-  const currentChapter = storyChapters[page];
-  const progressPercentage = ((page + 1) / storyChapters.length) * 100;
+  // Show loading or error states
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"
+          />
+          <p className="text-muted-foreground">Loading coach profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !coachData) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive mb-4">Failed to load coach profile</p>
+          <p className="text-muted-foreground">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const currentChapter = coachData.storyChapters[page];
+  const progressPercentage =
+    ((page + 1) / coachData.storyChapters.length) * 100;
 
   return (
     <div className="min-h-screen bg-background">
@@ -323,7 +358,7 @@ export default function Index() {
               </motion.div>
               <div>
                 <span className="text-xl font-semibold text-foreground">
-                  Dr. Sarah Chen
+                  {coachData.profile.name}
                 </span>
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -331,7 +366,7 @@ export default function Index() {
                   transition={{ delay: 0.5 }}
                   className="text-xs text-muted-foreground"
                 >
-                  Certified Health Coach
+                  {coachData.profile.title}
                 </motion.p>
               </div>
             </motion.div>
@@ -387,8 +422,11 @@ export default function Index() {
           variants={staggerContainer}
           className="container mx-auto px-4 lg:px-8"
         >
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div variants={fadeInLeft} className="max-w-2xl">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <motion.div
+              variants={fadeInLeft}
+              className="max-w-2xl lg:order-1 order-2"
+            >
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -428,10 +466,10 @@ export default function Index() {
                   transition={{ duration: 3, repeat: Infinity }}
                   className="text-primary block"
                 >
-                  Dr. Sarah Chen
+                  {coachData.profile.name}
                 </motion.span>
                 <span className="text-2xl lg:text-3xl text-muted-foreground block mt-2">
-                  Your Health Transformation Starts Here
+                  {coachData.profile.tagline}
                 </span>
               </motion.h1>
 
@@ -450,15 +488,15 @@ export default function Index() {
                   <Quote className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-lg italic text-foreground mb-2">
-                      {personalQuotes[activeQuote].text}
+                      {coachData.personalQuotes[activeQuote].text}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      — {personalQuotes[activeQuote].context}
+                      — {coachData.personalQuotes[activeQuote].context}
                     </p>
                   </div>
                 </motion.div>
                 <div className="flex space-x-2 mt-4">
-                  {personalQuotes.map((_, index) => (
+                  {coachData.personalQuotes.map((_, index) => (
                     <motion.button
                       key={index}
                       onClick={() => setActiveQuote(index)}
@@ -474,7 +512,7 @@ export default function Index() {
 
               <motion.div
                 variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8"
               >
                 <motion.div
                   whileHover={{
@@ -485,7 +523,7 @@ export default function Index() {
                 >
                   <Button
                     size="lg"
-                    className="text-lg px-8 py-6 relative overflow-hidden group"
+                    className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 relative overflow-hidden group"
                   >
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100"
@@ -500,11 +538,12 @@ export default function Index() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  className="relative z-10"
                 >
                   <Button
                     variant="outline"
                     size="lg"
-                    className="text-lg px-8 py-6 border-2 border-primary/30 hover:border-primary"
+                    className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary relative z-10"
                   >
                     <Play className="mr-2 w-5 h-5" />
                     Watch My Story (2 min)
@@ -517,9 +556,21 @@ export default function Index() {
                 className="grid grid-cols-3 gap-4 text-center"
               >
                 {[
-                  { number: "500+", label: "Lives Changed", icon: Users },
-                  { number: "10+", label: "Years Experience", icon: Clock },
-                  { number: "95%", label: "Success Rate", icon: TrendingUp },
+                  {
+                    number: `${coachData.profile.yearsExperience}+`,
+                    label: "Years Experience",
+                    icon: Clock,
+                  },
+                  {
+                    number: `${coachData.profile.livesChanged}+`,
+                    label: "Lives Changed",
+                    icon: Users,
+                  },
+                  {
+                    number: `${coachData.profile.successRate}%`,
+                    label: "Success Rate",
+                    icon: TrendingUp,
+                  },
                 ].map((stat, index) => (
                   <motion.div
                     key={stat.label}
@@ -548,12 +599,15 @@ export default function Index() {
               </motion.div>
             </motion.div>
 
-            <motion.div variants={fadeInRight} className="relative">
+            <motion.div
+              variants={fadeInRight}
+              className="relative lg:order-2 order-1"
+            >
               <motion.div
                 onMouseMove={handleMouseMove}
                 style={{
-                  rotateX: useTransform(y, [-100, 100], [10, -10]),
-                  rotateY: useTransform(x, [-100, 100], [-10, 10]),
+                  rotateX: rotateX,
+                  rotateY: rotateY,
                 }}
                 className="relative perspective-1000"
               >
@@ -597,7 +651,7 @@ export default function Index() {
                           transition={{ delay: 1, duration: 0.6 }}
                           className="text-xl font-semibold text-foreground"
                         >
-                          Dr. Sarah Chen
+                          {coachData.profile.name}
                         </motion.h3>
                         <motion.p
                           initial={{ opacity: 0 }}
@@ -605,7 +659,7 @@ export default function Index() {
                           transition={{ delay: 1.2, duration: 0.6 }}
                           className="text-muted-foreground"
                         >
-                          Your Dedicated Health Partner
+                          {coachData.profile.description}
                         </motion.p>
                         <motion.div
                           className="flex justify-center space-x-1"
@@ -643,12 +697,12 @@ export default function Index() {
                       x: [0, 5, 0],
                     }}
                     transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                    className="absolute top-4 right-4 bg-background/90 backdrop-blur rounded-lg p-2 border border-primary/20 shadow-lg"
+                    className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-background/90 backdrop-blur rounded-lg p-1.5 sm:p-2 border border-primary/20 shadow-lg"
                   >
-                    <div className="flex items-center space-x-2">
-                      <Shield className="w-4 h-4 text-primary" />
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      <Shield className="w-3 sm:w-4 h-3 sm:h-4 text-primary" />
                       <span className="text-xs font-medium text-foreground">
-                        Certified
+                        {coachData.profile.certifications[0]}
                       </span>
                     </div>
                   </motion.div>
@@ -659,12 +713,12 @@ export default function Index() {
                       x: [0, -5, 0],
                     }}
                     transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-                    className="absolute bottom-4 left-4 bg-background/90 backdrop-blur rounded-lg p-2 border border-secondary/20 shadow-lg"
+                    className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 bg-background/90 backdrop-blur rounded-lg p-1.5 sm:p-2 border border-secondary/20 shadow-lg"
                   >
-                    <div className="flex items-center space-x-2">
-                      <Award className="w-4 h-4 text-secondary" />
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      <Award className="w-3 sm:w-4 h-3 sm:h-4 text-secondary" />
                       <span className="text-xs font-medium text-foreground">
-                        10+ Years
+                        {coachData.profile.certifications[1]}
                       </span>
                     </div>
                   </motion.div>
@@ -709,7 +763,7 @@ export default function Index() {
             >
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-muted-foreground">
-                  Chapter {page + 1} of {storyChapters.length}
+                  Chapter {page + 1} of {coachData.storyChapters.length}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   {Math.round(progressPercentage)}%
@@ -734,7 +788,7 @@ export default function Index() {
             </motion.button>
 
             <div className="flex space-x-2">
-              {storyChapters.map((_, index) => (
+              {coachData.storyChapters.map((_, index) => (
                 <motion.button
                   key={index}
                   onClick={() => goToStory(index)}
@@ -760,7 +814,7 @@ export default function Index() {
           </motion.div>
 
           {/* Story Content */}
-          <div className="relative min-h-[600px] z-10">
+          <div className="relative min-h-[400px] lg:min-h-[600px] z-10">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={page}
@@ -799,7 +853,12 @@ export default function Index() {
                           transition={{ duration: 3, repeat: Infinity }}
                           className={`w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-lg`}
                         >
-                          <currentChapter.icon className="w-8 h-8 text-white" />
+                          {(() => {
+                            const IconComponent = getIcon(currentChapter.icon);
+                            return (
+                              <IconComponent className="w-8 h-8 text-white" />
+                            );
+                          })()}
                         </motion.div>
                       </div>
 
@@ -844,7 +903,7 @@ export default function Index() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.6 }}
                     >
-                      <div className="grid md:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                         {currentChapter.details.map((detail, index) => (
                           <motion.div
                             key={detail.title}
@@ -856,7 +915,7 @@ export default function Index() {
                               y: -5,
                               transition: { duration: 0.2 },
                             }}
-                            className="bg-background/80 backdrop-blur rounded-xl p-6 border border-border/50 hover:border-primary/30 transition-all duration-300 cursor-pointer group"
+                            className="bg-background/80 backdrop-blur rounded-xl p-4 md:p-6 border border-border/50 hover:border-primary/30 transition-all duration-300 cursor-pointer group"
                           >
                             <motion.div
                               whileHover={{
@@ -866,7 +925,12 @@ export default function Index() {
                               }}
                               className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300"
                             >
-                              <detail.icon className="w-6 h-6 text-primary" />
+                              {(() => {
+                                const IconComponent = getIcon(detail.icon);
+                                return (
+                                  <IconComponent className="w-6 h-6 text-primary" />
+                                );
+                              })()}
                             </motion.div>
 
                             <h4 className="font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
@@ -899,19 +963,19 @@ export default function Index() {
                 className="flex items-center space-x-2"
               >
                 <ChevronLeft className="w-5 h-5" />
-                <span>Previous Chapter</span>
+                <span className="hidden sm:inline">Previous Chapter</span>
               </Button>
             </motion.div>
 
-            <motion.div className="text-center px-6">
-              <p className="text-sm text-muted-foreground">
+            <motion.div className="text-center px-2 sm:px-6">
+              <p className="text-sm text-muted-foreground hidden sm:block">
                 {currentChapter.phase}
               </p>
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <ArrowDown className="w-6 h-6 text-primary mx-auto mt-2" />
+                <ArrowDown className="w-5 sm:w-6 h-5 sm:h-6 text-primary mx-auto mt-1 sm:mt-2" />
               </motion.div>
             </motion.div>
 
@@ -921,7 +985,7 @@ export default function Index() {
                 onClick={() => paginate(1)}
                 className="flex items-center space-x-2"
               >
-                <span>Next Chapter</span>
+                <span className="hidden sm:inline">Next Chapter</span>
                 <ChevronRight className="w-5 h-5" />
               </Button>
             </motion.div>
@@ -968,36 +1032,7 @@ export default function Index() {
               </motion.p>
 
               <motion.div variants={staggerContainer} className="space-y-6">
-                {[
-                  {
-                    icon: Heart,
-                    title: "Empathy-First Approach",
-                    description:
-                      "I've been where you are. My struggles inform my compassion.",
-                    color: "text-red-500",
-                  },
-                  {
-                    icon: Target,
-                    title: "Personalized Strategy",
-                    description:
-                      "Your plan is crafted specifically for your life, goals, and challenges.",
-                    color: "text-primary",
-                  },
-                  {
-                    icon: MessageCircle,
-                    title: "Always Available",
-                    description:
-                      "Real support means being there when you need guidance most.",
-                    color: "text-secondary",
-                  },
-                  {
-                    icon: TrendingUp,
-                    title: "Proven Results",
-                    description:
-                      "My methods work because they're tested by my own transformation.",
-                    color: "text-orange-500",
-                  },
-                ].map((approach, index) => (
+                {coachData.approach.map((approach, index) => (
                   <motion.div
                     key={approach.title}
                     variants={fadeInUp}
@@ -1016,7 +1051,14 @@ export default function Index() {
                       }}
                       className={`w-12 h-12 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0`}
                     >
-                      <approach.icon className={`w-6 h-6 ${approach.color}`} />
+                      {(() => {
+                        const IconComponent = getIcon(approach.icon);
+                        return (
+                          <IconComponent
+                            className={`w-6 h-6 ${approach.color}`}
+                          />
+                        );
+                      })()}
                     </motion.div>
                     <div>
                       <h4 className="font-semibold text-foreground mb-2">
