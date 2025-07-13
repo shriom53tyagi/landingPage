@@ -360,6 +360,26 @@ export default function Index() {
     setPage([index, newDirection]);
   };
 
+  const nextPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev + 1) % professionalPhotos.length);
+  };
+
+  const prevPhoto = () => {
+    setCurrentPhotoIndex((prev) =>
+      prev === 0 ? professionalPhotos.length - 1 : prev - 1,
+    );
+  };
+
+  const nextVideo = () => {
+    setCurrentVideoIndex((prev) => (prev + 1) % storyVideos.length);
+  };
+
+  const prevVideo = () => {
+    setCurrentVideoIndex((prev) =>
+      prev === 0 ? storyVideos.length - 1 : prev - 1,
+    );
+  };
+
   // Show loading or error states
   if (loading) {
     return (
