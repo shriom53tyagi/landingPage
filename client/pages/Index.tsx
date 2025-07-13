@@ -606,8 +606,8 @@ export default function Index() {
               <motion.div
                 onMouseMove={handleMouseMove}
                 style={{
-                  rotateX: useTransform(y, [-100, 100], [10, -10]),
-                  rotateY: useTransform(x, [-100, 100], [-10, 10]),
+                  rotateX: rotateX,
+                  rotateY: rotateY,
                 }}
                 className="relative perspective-1000"
               >
