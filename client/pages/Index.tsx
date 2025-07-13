@@ -387,7 +387,7 @@ export default function Index() {
           variants={staggerContainer}
           className="container mx-auto px-4 lg:px-8"
         >
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div variants={fadeInLeft} className="max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -474,7 +474,7 @@ export default function Index() {
 
               <motion.div
                 variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8"
               >
                 <motion.div
                   whileHover={{
@@ -485,7 +485,7 @@ export default function Index() {
                 >
                   <Button
                     size="lg"
-                    className="text-lg px-8 py-6 relative overflow-hidden group"
+                    className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 relative overflow-hidden group"
                   >
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100"
@@ -505,7 +505,7 @@ export default function Index() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="text-lg px-8 py-6 border-2 border-primary/30 hover:border-primary relative z-10"
+                    className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary relative z-10"
                   >
                     <Play className="mr-2 w-5 h-5" />
                     Watch My Story (2 min)
@@ -761,7 +761,7 @@ export default function Index() {
           </motion.div>
 
           {/* Story Content */}
-          <div className="relative min-h-[600px] z-10">
+          <div className="relative min-h-[400px] lg:min-h-[600px] z-10">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={page}
@@ -845,7 +845,7 @@ export default function Index() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.6 }}
                     >
-                      <div className="grid md:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                         {currentChapter.details.map((detail, index) => (
                           <motion.div
                             key={detail.title}
@@ -857,7 +857,7 @@ export default function Index() {
                               y: -5,
                               transition: { duration: 0.2 },
                             }}
-                            className="bg-background/80 backdrop-blur rounded-xl p-6 border border-border/50 hover:border-primary/30 transition-all duration-300 cursor-pointer group"
+                            className="bg-background/80 backdrop-blur rounded-xl p-4 md:p-6 border border-border/50 hover:border-primary/30 transition-all duration-300 cursor-pointer group"
                           >
                             <motion.div
                               whileHover={{
