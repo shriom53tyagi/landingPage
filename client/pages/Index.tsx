@@ -388,7 +388,10 @@ export default function Index() {
           className="container mx-auto px-4 lg:px-8"
         >
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <motion.div variants={fadeInLeft} className="max-w-2xl">
+            <motion.div
+              variants={fadeInLeft}
+              className="max-w-2xl lg:order-1 order-2"
+            >
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
