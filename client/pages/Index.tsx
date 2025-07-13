@@ -547,7 +547,7 @@ export default function Index() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative"
+                  className="relative z-50"
                 >
                   <Dialog
                     open={showStoryDialog}
@@ -557,7 +557,7 @@ export default function Index() {
                       <Button
                         variant="outline"
                         size="lg"
-                        className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5 transition-all duration-200"
+                        className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5 transition-all duration-200 relative z-50"
                       >
                         <Play className="mr-2 w-5 h-5" />
                         Watch My Story (2 min)
