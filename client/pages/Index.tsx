@@ -162,7 +162,7 @@ export default function Index() {
     {
       id: 1,
       year: "2012",
-      phase: "The Breaking Point",
+      phase: "",
       title: "When Everything Fell Apart",
       icon: Mountain,
       color: "from-red-500/30 to-orange-500/30",
