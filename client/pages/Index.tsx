@@ -1198,8 +1198,7 @@ export default function Index() {
                     transition={{ delay: 0.5, duration: 0.6 }}
                     className="text-muted-foreground mb-6 italic"
                   >
-                    "I will never ask you to do something I haven't done myself.
-                    Your success is built on my authentic experience."
+                    "{coachData.promise}"
                   </motion.p>
 
                   <motion.div
@@ -1236,7 +1235,7 @@ export default function Index() {
                     transition={{ delay: 0.7, duration: 0.6 }}
                     className="text-sm text-muted-foreground"
                   >
-                    — Dr. Sarah Chen, Your Health Partner
+                    — {coachData.profile.name}, Your Health Partner
                   </motion.p>
                 </motion.div>
               </motion.div>
