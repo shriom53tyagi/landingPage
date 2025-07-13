@@ -593,7 +593,7 @@ export default function Index() {
                 <div className="flex space-x-2 mt-4">
                   {coachData.personalQuotes.map((_, index) => (
                     <motion.button
-                      key={index}
+                      key={`quote-${index}`}
                       onClick={() => setActiveQuote(index)}
                       className={`w-2 h-2 rounded-full transition-colors ${
                         index === activeQuote ? "bg-primary" : "bg-muted"
@@ -727,7 +727,7 @@ export default function Index() {
                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
                               {storyVideos.map((video, index) => (
                                 <motion.button
-                                  key={index}
+                                  key={`video-${index}`}
                                   onClick={() => setCurrentVideoIndex(index)}
                                   className={`px-3 py-2 rounded-lg text-xs font-medium transition-all backdrop-blur ${
                                     index === currentVideoIndex
@@ -910,7 +910,7 @@ export default function Index() {
                         <div className="absolute top-2 left-1/2 -translate-x-1/2 flex space-x-1 z-10">
                           {professionalPhotos.map((_, index) => (
                             <motion.button
-                              key={index}
+                              key={`photo-${index}`}
                               onClick={() => setCurrentPhotoIndex(index)}
                               className={`w-2 h-2 rounded-full transition-all ${
                                 index === currentPhotoIndex
@@ -972,7 +972,7 @@ export default function Index() {
                           >
                             {[...Array(5)].map((_, i) => (
                               <motion.div
-                                key={i}
+                                key={`photo-star-${i}`}
                                 variants={fadeInUp}
                                 animate={{
                                   scale: [1, 1.2, 1],
