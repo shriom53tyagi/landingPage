@@ -12,6 +12,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useCoachData } from "@/hooks/use-coach-data";
 import { getIcon } from "@/lib/icon-mapper";
 import {
@@ -139,6 +147,7 @@ export default function Index() {
   const [activeQuote, setActiveQuote] = useState(0);
   const [currentStory, setCurrentStory] = useState(0);
   const [expandedStory, setExpandedStory] = useState<number | null>(null);
+  const [showStoryDialog, setShowStoryDialog] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -540,14 +549,83 @@ export default function Index() {
                   whileTap={{ scale: 0.95 }}
                   className="relative z-10"
                 >
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary relative z-10"
+                  <Dialog
+                    open={showStoryDialog}
+                    onOpenChange={setShowStoryDialog}
                   >
-                    <Play className="mr-2 w-5 h-5" />
-                    Watch My Story (2 min)
-                  </Button>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-primary/30 hover:border-primary relative z-10"
+                      >
+                        <Play className="mr-2 w-5 h-5" />
+                        Watch My Story (2 min)
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full h-[80vh] p-0 overflow-hidden">
+                      <DialogHeader className="p-6 pb-0">
+                        <DialogTitle className="flex items-center text-2xl">
+                          <Play className="mr-3 w-6 h-6 text-primary" />
+                          My Health Transformation Story
+                        </DialogTitle>
+                        <DialogDescription className="text-muted-foreground">
+                          A personal message from {coachData?.profile.name} - 2
+                          minutes that could change your life
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex-1 p-6 pt-4">
+                        <div className="relative w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl overflow-hidden">
+                          {/* Video Placeholder */}
+                          <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 bg-gradient-to-br from-background/90 to-background/70 backdrop-blur flex flex-col items-center justify-center text-center space-y-6"
+                          >
+                            <motion.div
+                              animate={{
+                                scale: [1, 1.05, 1],
+                                rotate: [0, 2, -2, 0],
+                              }}
+                              transition={{ duration: 3, repeat: Infinity }}
+                              className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl"
+                            >
+                              <Play className="w-12 h-12 text-white ml-1" />
+                            </motion.div>
+                            <div className="space-y-4">
+                              <h3 className="text-2xl font-semibold text-foreground">
+                                Video Coming Soon
+                              </h3>
+                              <p className="text-muted-foreground max-w-md">
+                                I'm currently preparing a personal video message
+                                to share my transformation story with you. In
+                                the meantime, you can read my journey in the
+                                sections below.
+                              </p>
+                              <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                              >
+                                <Button
+                                  onClick={() => {
+                                    setShowStoryDialog(false);
+                                    document
+                                      .getElementById("story")
+                                      ?.scrollIntoView({ behavior: "smooth" });
+                                  }}
+                                  className="mt-4"
+                                >
+                                  <BookOpen className="mr-2 w-4 h-4" />
+                                  Read My Story Instead
+                                </Button>
+                              </motion.div>
+                            </div>
+                          </motion.div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </motion.div>
               </motion.div>
 
