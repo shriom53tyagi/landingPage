@@ -700,7 +700,7 @@ export default function Index() {
                     <div className="flex items-center space-x-1 sm:space-x-2">
                       <Shield className="w-3 sm:w-4 h-3 sm:h-4 text-primary" />
                       <span className="text-xs font-medium text-foreground">
-                        Certified
+                        {coachData.profile.certifications[0]}
                       </span>
                     </div>
                   </motion.div>
@@ -716,7 +716,7 @@ export default function Index() {
                     <div className="flex items-center space-x-1 sm:space-x-2">
                       <Award className="w-3 sm:w-4 h-3 sm:h-4 text-secondary" />
                       <span className="text-xs font-medium text-foreground">
-                        10+ Years
+                        {coachData.profile.certifications[1]}
                       </span>
                     </div>
                   </motion.div>
