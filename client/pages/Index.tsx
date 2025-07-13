@@ -464,10 +464,10 @@ export default function Index() {
                   transition={{ duration: 3, repeat: Infinity }}
                   className="text-primary block"
                 >
-                  Dr. Sarah Chen
+                  {coachData.profile.name}
                 </motion.span>
                 <span className="text-2xl lg:text-3xl text-muted-foreground block mt-2">
-                  Your Health Transformation Starts Here
+                  {coachData.profile.tagline}
                 </span>
               </motion.h1>
 
